@@ -1,0 +1,33 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#fff"/>
+  
+  <!-- Outer shell -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#000" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Middle shells -->
+  <circle cx="100" cy="100" r="75" fill="none" stroke="#000" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="100" cy="100" r="55" fill="none" stroke="#000" stroke-width="1.5" opacity="0.5"/>
+  
+  <!-- Element segments radiating from center -->
+  <g stroke="#000" stroke-width="1" opacity="0.6">
+    <line x1="100" y1="100" x2="100" y2="20"/>
+    <line x1="100" y1="100" x2="156.7" y2="34.7"/>
+    <line x1="100" y1="100" x2="180" y2="100"/>
+    <line x1="100" y1="100" x2="156.7" y2="165.3"/>
+    <line x1="100" y1="100" x2="100" y2="180"/>
+    <line x1="100" y1="100" x2="43.3" y2="165.3"/>
+    <line x1="100" y1="100" x2="20" y2="100"/>
+    <line x1="100" y1="100" x2="43.3" y2="34.7"/>
+  </g>
+  
+  <!-- Inner core - black -->
+  <circle cx="100" cy="100" r="20" fill="#000" opacity="0.8"/>
+  <circle cx="100" cy="100" r="20" fill="#000" opacity="0.4"/>
+  
+  <!-- Center pulse -->
+  <circle cx="100" cy="100" r="12" fill="#000" opacity="0.9"/>
+  
+  <!-- Highlight for dimension -->
+  <circle cx="96" cy="96" r="5" fill="#fff" opacity="0.6"/>
+</svg>
