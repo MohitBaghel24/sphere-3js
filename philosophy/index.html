@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philosophy - The Observer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-header">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">← Back to Eye</a>
+            <h1 class="nav-title">Philosophy</h1>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left: 3D Scene -->
+        <div class="scene-container">
+            <canvas id="three-canvas"></canvas>
+            <div class="scene-overlay"></div>
+        </div>
+
+        <!-- Right: Books Grid -->
+        <div class="content-container">
+            <div class="content-header">
+                <h2 class="content-title">Input Data</h2>
+                <p class="content-subtitle">Collected wisdom from philosophy, psychology, and consciousness studies</p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="philosophy">Philosophy</button>
+                <button class="filter-btn" data-filter="manga">Manga & Anime</button>
+                <button class="filter-btn" data-filter="psychology">Psychology</button>
+            </div>
+
+            <!-- Books Grid -->
+            <div class="books-grid" id="books-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Detail Modal -->
+    <div class="book-detail-modal" id="book-detail-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">✕</button>
+            
+            <div class="modal-left">
+                <img id="modal-cover" src="" alt="Book Cover" class="modal-cover">
+            </div>
+            
+            <div class="modal-right">
+                <h2 id="modal-title" class="modal-title"></h2>
+                <p id="modal-author" class="modal-author"></p>
+                <p id="modal-genre" class="modal-genre"></p>
+                
+                <div class="modal-divider"></div>
+                
+                <p id="modal-summary" class="modal-summary"></p>
+                
+                <div class="modal-section">
+                    <h3 class="modal-section-title">Core Idea</h3>
+                    <p id="modal-core-idea" class="modal-text"></p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3 class="modal-section-title">Reality Rating</h3>
+                    <div class="reality-bar">
+                        <div id="reality-fill" class="reality-fill"></div>
+                    </div>
+                    <span id="reality-text" class="reality-text"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="books-data.js"></script>
+    <script src="three-scene.js"></script>
+    <script src="interactions.js"></script>
+</body>
+</html>
