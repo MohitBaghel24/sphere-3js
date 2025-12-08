@@ -15,8 +15,8 @@ const App = () => (
       <Toaster />
       <Sonner />
 
-      {/* ✅ THIS IS THE MOST IMPORTANT FIX */}
-      <BrowserRouter basename="/sphere-3js">
+      {/* ✅ FINAL CORRECT FIX */}
+      <BrowserRouter basename="/sphere-3js/">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="*" element={<NotFound />} />
@@ -28,4 +28,5 @@ const App = () => (
 );
 
 export default App;
+
 
