@@ -5,8 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  // ✅ FIX 1: Use "./" (dot slash). This forces the app to find files 
-  // relative to itself, fixing the 404 errors on GitHub Pages.
+  // ✅ FIX: Use "./" to make paths work on ANY domain
   base: "./", 
 
   server: {
@@ -23,5 +22,4 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
-
 
