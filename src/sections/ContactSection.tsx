@@ -3,7 +3,8 @@ import { useState, useRef } from 'react';
 
 const SOCIAL_LINKS = [
   { name: 'GitHub', handle: 'MohitBaghel24', url: 'https://github.com/MohitBaghel24' },
-  { name: 'X', handle: '@MohitBaghel24', url: '#' },
+  { name: 'Mohit Creations', handle: 'Mohit Creations', url: 'https://mohitbaghel.dev' },
+  { name: 'X', handle: '@MohitBaghel24', url: 'https://x.com/MohitBaghel24' },
 ];
 
 export default function ContactSection() {
