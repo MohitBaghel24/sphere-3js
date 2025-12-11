@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -35,6 +35,7 @@ const CONFIG = {
   
   // Camera
   defaultCameraZ: 5,
+  mobileCameraZ: 8.5, // New config for mobile
   zoomedCameraZ: 1.8,
   defaultFOV: 50,
   zoomedFOV: 42,
@@ -52,6 +53,11 @@ const CONFIG = {
 
 // Section rings are at indices 1-5 (ring 0, 6, and 7 are decorative)
 const SECTION_RING_INDICES = [1, 2, 3, 4, 5];
+
+// Helper to get responsive camera Z
+const getResponsiveZ = () => {
+  return window.innerWidth <= 768 ? CONFIG.mobileCameraZ : CONFIG.defaultCameraZ;
+};
 
 // ============================================================
 // WIREFRAME SPHERE WITH STEP-BASED ACTIVATION
@@ -275,6 +281,9 @@ function TheEyeScene() {
   const mouseRef = useRef({ x: 0, y: 0 });
   const targetRef = useRef({ x: 0, y: 0 });
   
+  // Current viewport width for responsive camera
+  const [targetZ, setTargetZ] = useState(getResponsiveZ());
+  
   const { 
     isZoomed, 
     hoveredRing, 
@@ -282,6 +291,16 @@ function TheEyeScene() {
     openSection,
     currentStep,
   } = useStore();
+  
+  // Handle resize
+  useEffect(() => {
+    const handleResize = () => {
+      setTargetZ(getResponsiveZ());
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   // Mouse move handler for parallax
   useEffect(() => {
@@ -328,9 +347,9 @@ function TheEyeScene() {
         onUpdate: () => cam.updateProjectionMatrix(),
       });
     } else {
-      // Zoom OUT
+      // Zoom OUT - use dynamic targetZ
       gsap.to(cam.position, {
-        z: CONFIG.defaultCameraZ,
+        z: targetZ,
         duration: 1.0,
         ease: 'power3.out',
       });
@@ -341,7 +360,7 @@ function TheEyeScene() {
         onUpdate: () => cam.updateProjectionMatrix(),
       });
     }
-  }, [isZoomed]);
+  }, [isZoomed, targetZ]); // Add targetZ dependency to update when screen resizes
   
   // Generate ring configurations
   const rings = useMemo(() => {
@@ -423,10 +442,14 @@ function TheEyeScene() {
 // MAIN CANVAS COMPONENT
 // ============================================================
 export default function TheEye() {
+  // We need initial state safe for SSR/Hydration, though this is CLIENT only usually in Vite.
+  // Using a state initialized function is fine.
+  const [initialZ] = useState(getResponsiveZ());
+
   return (
     <div className="fixed inset-0">
       <Canvas
-        camera={{ position: [0, 0, CONFIG.defaultCameraZ], fov: CONFIG.defaultFOV }}
+        camera={{ position: [0, 0, initialZ], fov: CONFIG.defaultFOV }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: 'transparent' }}
       >
@@ -436,3 +459,4 @@ export default function TheEye() {
     </div>
   );
 }
+
