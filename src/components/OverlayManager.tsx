@@ -5,7 +5,7 @@ import WorksSection from '@/sections/WorksSection';
 import PhilosophySection from '@/sections/PhilosophySection';
 import ExperimentsSection from '@/sections/ExperimentsSection';
 import ContactSection from '@/sections/ContactSection';
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
 // Section component mapping
 const SECTION_COMPONENTS: Record<Exclude<SectionId, null>, React.ComponentType> = {
@@ -41,19 +41,36 @@ const overlayVariants = {
 
 export default function OverlayManager() {
   const { activeSection, closeSection, currentStep } = useStore();
-  
+  const [isScrolled, setIsScrolled] = useState(false);
+
   // Close on ESC
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape' && activeSection) {
       closeSection();
     }
   }, [activeSection, closeSection]);
-  
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
-  
+
+  // Detect scroll to hide title when scrolling down
+  useEffect(() => {
+    const handleScroll = () => {
+      const panel = document.querySelector('.section-panel');
+      if (panel) {
+        setIsScrolled(panel.scrollTop > 50);
+      }
+    };
+
+    const panel = document.querySelector('.section-panel');
+    if (panel) {
+      panel.addEventListener('scroll', handleScroll);
+      return () => panel.removeEventListener('scroll', handleScroll);
+    }
+  }, [activeSection]);
+
   // Lock body scroll when overlay is open
   useEffect(() => {
     if (activeSection) {
@@ -65,13 +82,13 @@ export default function OverlayManager() {
       document.body.style.overflow = '';
     };
   }, [activeSection]);
-  
+
   const handleClose = () => {
     closeSection();
   };
-  
+
   const SectionComponent = activeSection ? SECTION_COMPONENTS[activeSection] : null;
-  
+
   return (
     <AnimatePresence mode="wait">
       {activeSection && SectionComponent && (
@@ -86,7 +103,7 @@ export default function OverlayManager() {
         >
           {/* Transparent backdrop with blur */}
           <div className="absolute inset-0 bg-white/60 backdrop-blur-md" />
-          
+
           {/* Close button */}
           <button
             id="sectionCloseButton"
@@ -101,12 +118,12 @@ export default function OverlayManager() {
               ✕
             </span>
           </button>
-          
-          {/* Section title indicator */}
-          <div className="fixed top-8 left-8 z-50">
+
+          {/* Section title indicator - hides when scrolling */}
+          <div className={`fixed top-8 left-8 z-50 transition-opacity duration-300 ${isScrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              animate={{ opacity: isScrolled ? 0 : 1, x: 0 }}
               transition={{ delay: 0.6, duration: 0.5 }}
             >
               <span className="font-mono text-[10px] text-black/30 tracking-[0.3em] uppercase">
@@ -117,11 +134,11 @@ export default function OverlayManager() {
               </h2>
             </motion.div>
           </div>
-          
+
           {/* Section Content - Transparent panel */}
-          <div 
+          <div
             className="section-panel absolute inset-0 overflow-y-auto overflow-x-hidden"
-            style={{ 
+            style={{
               background: 'transparent',
               backdropFilter: 'blur(6px)',
             }}
